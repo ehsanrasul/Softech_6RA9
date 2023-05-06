@@ -26,8 +26,6 @@ app.post("/addItem", async (req, res) => {
 });
 
 
-
-
 app.get('/'  ,async (req , res)=>{
     try {
     const items = await Inventory.find()
