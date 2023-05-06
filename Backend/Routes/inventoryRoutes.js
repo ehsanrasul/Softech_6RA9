@@ -3,15 +3,15 @@ const app = express()
 require('dotenv').config()
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const User = require('../Models/UserSchema')
+const Inventory = require('../Models/inventorySchema')
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.json())
 
 
-app.post("/signup", async (req, res) => {
+app.post("/addItem", async (req, res) => {
   try {
-    const user = await new User(req.body);
-    user
+    const item = await new Inventory(req.body);
+    item
       .save()
       .then((response) => {
         console.log(response);
@@ -26,22 +26,19 @@ app.post("/signup", async (req, res) => {
 });
 
 
-app.post("/login", async (req, res) => {
-  const result = await User.findOne({
-    full_name: req.body.full_name,
-    password: req.body.password,
-  })
-    .then((obj) => {
-      if (obj) {
-        res.json({ found: true, object: obj });
-      } else {
-        res.json({ found: false });
-      }
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-});
+
+
+app.get('/'  ,async (req , res)=>{
+    try {
+    const items = await Inventory.find()
+    res.json(items)
+    }
+    catch(err) {
+        res.status.json({message: err.message})
+    }
+})
+   
+
 
 
 module.exports = app;
